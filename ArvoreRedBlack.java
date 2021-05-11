@@ -8,7 +8,7 @@ public class ArvoreRedBlack extends ArvoreAbstract {
     @Override
     public void inserir(int valor) {
         this.inserir(this.raiz, valor);
-
+        System.out.println("Inserindo o valor: " + valor);
         /** 
          * Validar as propriedades da árvore, se preciso
          * balancear
@@ -17,7 +17,6 @@ public class ArvoreRedBlack extends ArvoreAbstract {
 
     @Override
     public int remover(int valor) throws Exception {
-        // TODO Auto-generated method stub
         return 0;
     }
 
