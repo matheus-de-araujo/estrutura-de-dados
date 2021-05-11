@@ -9,10 +9,8 @@ public class ArvoreRedBlack extends ArvoreAbstract {
     public void inserir(int valor) {
         this.inserir(this.raiz, valor);
         System.out.println("Inserindo o valor: " + valor);
-        /** 
-         * Validar as propriedades da árvore, se preciso
-         * balancear
-        */
+        
+        
     }
 
     @Override
