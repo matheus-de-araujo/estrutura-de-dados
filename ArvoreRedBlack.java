@@ -6,18 +6,6 @@ public class ArvoreRedBlack extends ArvoreAbstract {
     }
 
     @Override
-    public void inserir(int valor) {
-
-        this.inserir(this.raiz, valor);
-
-        System.out.println("Inserindo o valor: " + valor);
-
-        if(precisaValidar(this.raiz)) {
-            System.out.println("Precisa Balancear!!!");
-        }
-    }
-
-    @Override
     public int remover(int valor) throws Exception {
         return 0;
     }
@@ -27,18 +15,25 @@ public class ArvoreRedBlack extends ArvoreAbstract {
         return this.altura(this.raiz);
     }
 
-    private boolean precisaValidar(No no) {
+    @Override
+    public void inserir(int valor) {
+
+        this.inserir(this.raiz, valor);
+
+        System.out.println("Inserido o valor: " + valor);
+
+        balancear(this.raiz);
+
+    } 
+
+    private void balancear(No no) {
 
         if(no.getDireito() != null) {
-            if(precisaValidar(no.getDireito())) {
-                return true;
-            }
+            balancear(no.getDireito());
         }
         
         if(no.getEsquerdo() != null) {
-            if(precisaValidar(no.getEsquerdo())) {
-                return true;
-            }
+            balancear(no.getEsquerdo());
         }
         
         if(no.isRedNode()) {
@@ -56,53 +51,89 @@ public class ArvoreRedBlack extends ArvoreAbstract {
             }
         }
 
-        return false;
+        return;
     }
 
-    private void balancear(No no, String ladoFilho) {
+    private void balancear(No no, String ladoDoFilho) {
+
+        No noIrmao;
+
+        String meuLado;
+
         if(no.getPai().getEsquerdo() == no) {
-            if(no.getPai().getDireito() == null) {
-                
-            }
-            if(no.getPai().getDireito().isRedNode()) {
+            noIrmao = no.getPai().getDireito();
+            meuLado = "Esquerdo";
+        }
 
-                no.getPai().getDireito().setBlackNode();
-                no.setBlackNode();
-
-                if(!no.getPai().isRoot()) {
-                    no.getPai().setRedNode();
-                }
+        else {
+            noIrmao = no.getPai().getEsquerdo();
+            meuLado = "Direito";
+        }
+        
+        if(noIrmao != null) {
+            
+            if(noIrmao.isRedNode()) {
+                caso01(no, noIrmao);
             }
 
             else {
-                if(ladoFilho == "Direita") {
-
-                }
-
-                else {
-                    no.getPai().setRedNode();
-                    no.setBlackNode();
-
-                    // No noAux = no.getPai();
-                    // no.setPai(no.getPai().getPai());
-                    // no.getPai().setPai(no);
-                    // no.setEsquerdo(no);
-
-                }
+                no = caso02(no, ladoDoFilho, meuLado);
             }
         }
 
         else {
+            no = caso02(no, ladoDoFilho, meuLado);
+        }
 
-            if(no.getPai().getEsquerdo().isRedNode()) {
-                
-                no.getPai().getEsquerdo().setBlackNode();
-                no.setBlackNode();
+        return;
+    }
 
-                if(!no.getPai().isRoot()) {
-                    no.getPai().setRedNode();
-                }
+    public No caso02(No no, String ladoDoFilho, String meuLado) {
+        if(meuLado == "Direito") {
+            if(ladoDoFilho == "Direita") {
+                No noPai = rotacaoSimplesEsquerda(no.getPai());
+                no.getPai();
+            }
+
+            else {
+                //no = rotaocaoDuplaEsquerda(no);
             }
         }
+
+        else {
+            if(ladoDoFilho == "Direita") {
+                //no = rotaocaoDuplaDireita(no);
+            }
+
+            else {
+                //no = rotacaoSimplesDireita(no);
+            }
+        }
+
+        return no;
+    }
+
+    public void caso01(No no, No noIrmao) {
+        noIrmao.setBlackNode();
+        no.setBlackNode();
+
+        if(!no.getPai().isRoot()) {
+            no.getPai().setRedNode();
+        }
+    }
+
+    public No rotacaoSimplesEsquerda(No A) {
+
+        No B = A.getDireito();
+        No C = B.getDireito();
+        No D = A.getEsquerdo();
+        No E = B.getEsquerdo();
+
+        B.setDireito(C);
+        A.setEsquerdo(D);
+        A.setDireito(E);
+        B.setEsquerdo(A);
+
+        return B;
     }
 }
