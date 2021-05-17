@@ -22,39 +22,41 @@ public class ArvoreRedBlack extends ArvoreAbstract {
 
         System.out.println("Inserido o valor: " + valor);
 
-        balancear(this.raiz);
+        this.raiz = balancear(this.raiz);
 
     } 
 
-    private void balancear(No no) {
+    private No balancear(No no) {
 
         if(no.getDireito() != null) {
-            balancear(no.getDireito());
+            no.setDireito(balancear(no.getDireito()));
+            
         }
-        
+
         if(no.getEsquerdo() != null) {
-            balancear(no.getEsquerdo());
+            no.setEsquerdo(balancear(no.getEsquerdo()));
         }
+
         
         if(no.isRedNode()) {
 
             if(no.getDireito() != null) {
                 if(no.getDireito().isRedNode()) {
-                    balancear(no, "Direita");
+                    no = balancear(no, "Direita");
                 }
             }
 
             if(no.getEsquerdo() != null) {
                 if(no.getEsquerdo().isRedNode()) {
-                    balancear(no, "Esquerda");
+                    no = balancear(no, "Esquerda");
                 }
             }
         }
 
-        return;
+        return no;
     }
 
-    private void balancear(No no, String ladoDoFilho) {
+    private No balancear(No no, String ladoDoFilho) {
 
         No noIrmao;
 
@@ -85,14 +87,15 @@ public class ArvoreRedBlack extends ArvoreAbstract {
             no = caso02(no, ladoDoFilho, meuLado);
         }
 
-        return;
+        return no;
     }
 
     public No caso02(No no, String ladoDoFilho, String meuLado) {
         if(meuLado == "Direito") {
             if(ladoDoFilho == "Direita") {
-                No noPai = rotacaoSimplesEsquerda(no.getPai());
-                no.getPai();
+                No noPai = no.getPai();
+                noPai = rotacaoSimplesEsquerda(noPai);
+                no.setPai(noPai);
             }
 
             else {
@@ -133,6 +136,8 @@ public class ArvoreRedBlack extends ArvoreAbstract {
         A.setEsquerdo(D);
         A.setDireito(E);
         B.setEsquerdo(A);
+        B.setPai(A.getPai());
+        A.setPai(B);
 
         return B;
     }
