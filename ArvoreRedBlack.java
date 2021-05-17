@@ -18,111 +18,92 @@ public class ArvoreRedBlack extends ArvoreAbstract {
     @Override
     public void inserir(int valor) {
 
-        this.inserir(this.raiz, valor);
+        No novo = this.inserir(this.raiz, valor);
 
         System.out.println("Inserido o valor: " + valor);
 
-        this.raiz = balancear(this.raiz);
+        balancear(novo);
 
     } 
 
-    private No balancear(No no) {
+    private void balancear(No novo) {
 
-        if(no.getDireito() != null) {
-            no.setDireito(balancear(no.getDireito()));
-            
-        }
+        No noTio;
 
-        if(no.getEsquerdo() != null) {
-            no.setEsquerdo(balancear(no.getEsquerdo()));
-        }
-
-        
-        if(no.isRedNode()) {
-
-            if(no.getDireito() != null) {
-                if(no.getDireito().isRedNode()) {
-                    no = balancear(no, "Direita");
-                }
-            }
-
-            if(no.getEsquerdo() != null) {
-                if(no.getEsquerdo().isRedNode()) {
-                    no = balancear(no, "Esquerda");
-                }
-            }
-        }
-
-        return no;
-    }
-
-    private No balancear(No no, String ladoDoFilho) {
-
-        No noIrmao;
+        No noPai = novo.getPai();
 
         String meuLado;
 
-        if(no.getPai().getEsquerdo() == no) {
-            noIrmao = no.getPai().getDireito();
-            meuLado = "Esquerdo";
-        }
+        while(noPai.isRedNode()) {
 
-        else {
-            noIrmao = no.getPai().getEsquerdo();
-            meuLado = "Direito";
+            if(noPai.getPai().getEsquerdo() == noPai) {
+                noTio = noPai.getPai().getDireito();
+                meuLado = "Esquerdo";
+            }
+    
+            else {
+                noTio = noPai.getPai().getEsquerdo();
+                meuLado = "Direito";
+            }
+            
+            if(noTio != null) {
+                
+                if(noTio.isRedNode()) {
+                    noPai = caso01(noPai, noTio);
+                }
+    
+                else {
+                    noPai = caso02(noPai, meuLado);
+                }
+            }
+    
+            else {
+                noPai = caso02(noPai, meuLado);
+            }
+
+            if(noPai == null) {
+                return;
+            }
         }
         
-        if(noIrmao != null) {
-            
-            if(noIrmao.isRedNode()) {
-                caso01(no, noIrmao);
-            }
+    }
 
-            else {
-                no = caso02(no, ladoDoFilho, meuLado);
-            }
-        }
+    public No caso02(No no, String meuLado) {
+        // if(meuLado == "Direito") {
+        //     if(ladoDoFilho == "Direita") {
+        //         No noPai = no.getPai();
+        //         noPai = rotacaoSimplesEsquerda(noPai);
+        //         no.setPai(noPai);
+        //     }
 
-        else {
-            no = caso02(no, ladoDoFilho, meuLado);
-        }
+        //     else {
+        //         //no = rotaocaoDuplaEsquerda(no);
+        //     }
+        // }
+
+        // else {
+        //     if(ladoDoFilho == "Direita") {
+        //         //no = rotaocaoDuplaDireita(no);
+        //     }
+
+        //     else {
+        //         //no = rotacaoSimplesDireita(no);
+        //     }
+        // }
 
         return no;
     }
 
-    public No caso02(No no, String ladoDoFilho, String meuLado) {
-        if(meuLado == "Direito") {
-            if(ladoDoFilho == "Direita") {
-                No noPai = no.getPai();
-                noPai = rotacaoSimplesEsquerda(noPai);
-                no.setPai(noPai);
-            }
+    public No caso01(No noPai, No noTio) {
 
-            else {
-                //no = rotaocaoDuplaEsquerda(no);
-            }
+        noTio.setBlackNode();
+        noPai.setBlackNode();
+
+        if(!noPai.getPai().isRoot()) {
+            noPai.getPai().setRedNode();
         }
 
-        else {
-            if(ladoDoFilho == "Direita") {
-                //no = rotaocaoDuplaDireita(no);
-            }
-
-            else {
-                //no = rotacaoSimplesDireita(no);
-            }
-        }
-
-        return no;
-    }
-
-    public void caso01(No no, No noIrmao) {
-        noIrmao.setBlackNode();
-        no.setBlackNode();
-
-        if(!no.getPai().isRoot()) {
-            no.getPai().setRedNode();
-        }
+        return noPai.getPai().getPai();
     }
 
     public No rotacaoSimplesEsquerda(No A) {

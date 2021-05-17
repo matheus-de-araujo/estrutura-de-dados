@@ -70,33 +70,39 @@ public abstract class ArvoreAbstract {
      * @param no No - acesso nó recursivo
      * @param valor float - valor a ser inserido na árvore.
      */ 
-    protected void inserir(No no, int valor) {
+    protected No inserir(No no, int valor) {
+
+        No novo;
 
         if(valor < no.getValor()) {
             //esquerda
             if(no.getEsquerdo() == null) {
-                No novo = new No(valor);
+                novo = new No(valor);
                 no.setEsquerdo(novo);
                 novo.setPai(no);
+                return novo;
             }
 
             else  {
-                inserir(no.getEsquerdo(), valor);
+                novo = inserir(no.getEsquerdo(), valor);
             }
         }
 
         else {
             // direita
             if(no.getDireito() == null) {
-                No novo = new No(valor);
+                novo = new No(valor);
                 no.setDireito(novo);
                 novo.setPai(no);
+                return novo;
             }
 
             else {
-                inserir(no.getDireito(), valor);
+                novo = inserir(no.getDireito(), valor);
             }
         }
+
+        return novo;
     }
 
     public abstract int remover(int valor) throws Exception;
