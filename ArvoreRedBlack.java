@@ -22,39 +22,18 @@ public class ArvoreRedBlack extends ArvoreAbstract {
 
         System.out.println("Inserido o valor: " + valor);
 
-        balancear(novo);
+        if(this.altura() > ) {
+            balancear(novo);
+        }
 
     } 
 
     private void balancear(No novo) {
 
-        No noTio;
-
         No noPai = novo.getPai();
-
-        String ladoPai;
-
-        String meuLado;
-
-        if(noPai.getDireito() == novo) {
-            meuLado = "Direito";
-        }
-
-        else {
-            meuLado = "Esquerdo";
-        }
+        No noTio = noPai.myBrother();
 
         while(noPai.isRedNode()) {
-
-            if(noPai.getPai().getEsquerdo() == noPai) {
-                noTio = noPai.getPai().getDireito();
-                ladoPai = "Esquerdo";
-            }
-    
-            else {
-                noTio = noPai.getPai().getEsquerdo();
-                ladoPai = "Direito";
-            }
             
             if(noTio != null) {
                 
@@ -63,13 +42,13 @@ public class ArvoreRedBlack extends ArvoreAbstract {
                 }
     
                 else {
-                    caso02(noPai, ladoPai, meuLado);
+                    caso02(noPai, novo);
                     return;
                 }
             }
     
             else {
-                caso02(noPai, ladoPai, meuLado);
+                caso02(noPai, novo);
                 return;
             }
 
@@ -78,33 +57,6 @@ public class ArvoreRedBlack extends ArvoreAbstract {
             }
         }
 
-    }
-
-    private void caso02(No noPai, String ladoPai, String meuLado) {
-
-        if(ladoPai == "Direito") {
-            if(meuLado == "Direito") {
-                noPai = rotacaoSimplesEsquerda(noPai);
-            }
-
-            else {
-                noPai = rotaocaoDuplaEsquerda(noPai);
-            }
-        }
-
-        else {
-            if(meuLado == "Direito") {
-                noPai = rotaocaoDuplaDireita(noPai);
-            }
-
-            else {
-                noPai = rotacaoSimplesDireita(noPai);
-            }
-        }
-
-        if(noPai.getPai() == null) {
-            this.raiz = noPai;
-        }
     }
 
     private No caso01(No noPai, No noTio) {
@@ -117,6 +69,44 @@ public class ArvoreRedBlack extends ArvoreAbstract {
         }
 
         return noPai.getPai().getPai();
+    }
+
+    private void caso02(No noPai, No novo) {
+
+        if(noPai.onRight()) {
+            if(novo.onRight()) {
+                noPai = rotacaoSimplesEsquerda(noPai);
+            }
+
+            else {
+                noPai = rotaocaoDuplaEsquerda(noPai);
+            }
+        }
+
+        else {
+            if(novo.onRight()) {
+                noPai = rotaocaoDuplaDireita(noPai);
+            }
+
+            else {
+                noPai = rotacaoSimplesDireita(noPai);
+            }
+        }
+
+        if(noPai.getPai() == null) {
+            this.raiz = noPai;
+        }
+
+        else {
+            if(noPai.onRight()) {
+                noPai.getPai().setDireito(noPai);
+            }
+
+            else {
+                noPai.getPai().setEsquerdo(noPai);
+            }
+        }
+
     }
 
     private No rotacaoSimplesEsquerda(No A) {
@@ -171,4 +161,5 @@ public class ArvoreRedBlack extends ArvoreAbstract {
         No noPai = rotacaoSimplesDireita(C);
         return noPai;
     }
+
 }
