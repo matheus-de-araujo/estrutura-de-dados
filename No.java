@@ -81,5 +81,25 @@ public class No {
     public boolean isRoot() {
         return this.pai == null;
     }
+
+    public No myBrother() {
+        if(this.getPai().getDireito() == this) {
+            return this.getPai().getEsquerdo();
+        }
+
+        else {
+            return this.getPai().getDireito();
+        }
+    }
+
+    public boolean onRight() {
+        if(this.getPai().getDireito() == this) {
+            return true;
+        }
+
+        else {
+            return false;
+        }
+    }
   
 }

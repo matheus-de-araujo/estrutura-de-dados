@@ -22,7 +22,7 @@ public class ArvoreRedBlack extends ArvoreAbstract {
 
         System.out.println("Inserido o valor: " + valor);
 
-        if(this.altura() > ) {
+        if(this.altura() > 2) {
             balancear(novo);
         }
 
@@ -73,6 +73,16 @@ public class ArvoreRedBlack extends ArvoreAbstract {
 
     private void caso02(No noPai, No novo) {
 
+        String ladoInsercao = "";
+        if(noPai.getPai().getPai() != null) {
+            if(noPai.getPai().onRight()) {
+                ladoInsercao = "Direito";
+            }
+            else {
+                ladoInsercao = "Esquerdo";
+            }
+        }
+
         if(noPai.onRight()) {
             if(novo.onRight()) {
                 noPai = rotacaoSimplesEsquerda(noPai);
@@ -95,18 +105,16 @@ public class ArvoreRedBlack extends ArvoreAbstract {
 
         if(noPai.getPai() == null) {
             this.raiz = noPai;
+            return;
+        }
+
+        if(ladoInsercao == "Direito") {
+            noPai.getPai().setDireito(noPai);
         }
 
         else {
-            if(noPai.onRight()) {
-                noPai.getPai().setDireito(noPai);
-            }
-
-            else {
-                noPai.getPai().setEsquerdo(noPai);
-            }
+            noPai.getPai().setEsquerdo(noPai);
         }
-
     }
 
     private No rotacaoSimplesEsquerda(No A) {
@@ -142,7 +150,19 @@ public class ArvoreRedBlack extends ArvoreAbstract {
     }
 
     private No rotaocaoDuplaEsquerda(No A) {
-        return A;
+        No B = A.getPai();
+        No C = A.getEsquerdo();
+        No D = C.getDireito();
+
+        A.setEsquerdo(D);
+        C.setDireito(A);
+
+        B.setDireito(C);
+        C.setPai(B);
+        A.setPai(C);
+
+        No noPai = rotacaoSimplesEsquerda(C);
+        return noPai;
     }
 
     private No rotaocaoDuplaDireita(No A) {
