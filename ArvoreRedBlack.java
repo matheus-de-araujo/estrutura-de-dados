@@ -85,27 +85,25 @@ public class ArvoreRedBlack extends ArvoreAbstract {
         if(ladoPai == "Direito") {
             if(meuLado == "Direito") {
                 noPai = rotacaoSimplesEsquerda(noPai);
-                if(noPai.getPai() == null) {
-                    this.raiz = noPai;
-                }
             }
 
-            // else {
-            //     //no = rotaocaoDuplaEsquerda(no);
-            // }
+            else {
+                noPai = rotaocaoDuplaEsquerda(noPai);
+            }
         }
 
         else {
             if(meuLado == "Direito") {
-                //no = rotaocaoDuplaDireita(no);
+                noPai = rotaocaoDuplaDireita(noPai);
             }
 
             else {
                 noPai = rotacaoSimplesDireita(noPai);
-                if(noPai.getPai() == null) {
-                    this.raiz = noPai;
-                }
             }
+        }
+
+        if(noPai.getPai() == null) {
+            this.raiz = noPai;
         }
     }
 
@@ -126,6 +124,9 @@ public class ArvoreRedBlack extends ArvoreAbstract {
         No B = A.getEsquerdo();
         No C = A.getPai();
 
+        A.setBlackNode();
+        C.setRedNode();
+
         A.setEsquerdo(C);
         C.setDireito(B);
         A.setPai(C.getPai());
@@ -139,11 +140,35 @@ public class ArvoreRedBlack extends ArvoreAbstract {
         No B = A.getDireito();
         No C = A.getPai();
 
+        A.setBlackNode();
+        C.setRedNode();
+
         A.setDireito(C);
         C.setEsquerdo(B);
         A.setPai(C.getPai());
         C.setPai(A);
 
         return A;
+    }
+
+    private No rotaocaoDuplaEsquerda(No A) {
+        return A;
+    }
+
+    private No rotaocaoDuplaDireita(No A) {
+
+        No B = A.getPai();
+        No C = A.getDireito();
+        No D = C.getEsquerdo();
+
+        A.setDireito(D);
+        C.setEsquerdo(A);
+
+        B.setEsquerdo(C);
+        C.setPai(B);
+        A.setPai(C);
+
+        No noPai = rotacaoSimplesDireita(C);
+        return noPai;
     }
 }
