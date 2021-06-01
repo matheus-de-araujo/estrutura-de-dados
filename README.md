@@ -25,7 +25,7 @@
 ```bash
 
 # Clone este repositório
-$ git clone https://github.com/matheus-de-araujo/google-glass
+$ git clone https://github.com/matheus-de-araujo/estrutura-de-dados
 
 ```
 
