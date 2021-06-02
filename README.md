@@ -12,6 +12,9 @@
   	<a href="#-tecnologias">Tecnologias</a>
 </p>
 
+<h4 align="center"> 
+	🚧  Status: Finalizado ✔️ 🚧
+</h4>
 
 ## :pencil: Sobre o projeto
 É um desafio de estrutura de dados, relacionado a inserção de dados em uma árvore red black, feito em java.
