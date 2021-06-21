@@ -1,7 +1,7 @@
 public class ArvoreAVL extends ArvoreAbstract {
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
+    public static final String reset = "\u001B[0m";
+    public static final String red = "\u001B[31m";
 
     private int fb;
 
@@ -12,7 +12,7 @@ public class ArvoreAVL extends ArvoreAbstract {
 
     /**
      * @description Método que chama o outro método a partir da raiz para encontrar
-     *  o local correto de ser inserido na árvore
+     *              o local correto de ser inserido na árvore
      * @author Hagamenon Oliveira <haganicolau@gmail.com>
      * @param valor float - valor a ser inserido na árvore.
      */
@@ -32,30 +32,30 @@ public class ArvoreAVL extends ArvoreAbstract {
         return altura(this.raiz);
     }
 
-     /**
-     * @description Método que chama outro método a partir da raiz da árvore 
-     * navegando de forma recursiva visitando todos os nós. 
+    /**
+     * @description Método que chama outro método a partir da raiz da árvore
+     *              navegando de forma recursiva visitando todos os nós.
      * @author Hagamenon Oliveira <haganicolau@gmail.com>
      */
     public void calcularFB() {
         calcularFB(this.raiz);
     }
 
-   /**
+    /**
      * @description Método que calcula o fator de balanceamento de cada nó, a partir
-     * do valor da altura.
+     *              do valor da altura.
      * @author Hagamenon Oliveira <haganicolau@gmail.com>
      * @param no No - nó de forma recursiva
      */
     public void calcularFB(No no) {
-        if(no != null) {
-            
+        if (no != null) {
+
             int esq = altura(no.getEsquerdo());
             int dir = altura(no.getDireito());
 
             int fb = dir - esq;
 
-            if(Math.abs(fb) > this.fb)
+            if (Math.abs(fb) > this.fb)
                 this.fb = fb;
 
             no.setFb(fb);
@@ -65,7 +65,6 @@ public class ArvoreAVL extends ArvoreAbstract {
         }
     }
 
-    
     /**
      * @description Métoo que efetua o balanceamento conforme as regras da AVL
      * @author Hagamenon Oliveira <haganicolau@gmail.com>
@@ -77,7 +76,7 @@ public class ArvoreAVL extends ArvoreAbstract {
 
     public No balancear(No no) {
 
-        if(no != null) {
+        if (no != null) {
 
             /**
              * navegar nó a nó de forma recursiva validando se precisa de balanceamento
@@ -89,43 +88,45 @@ public class ArvoreAVL extends ArvoreAbstract {
             No raiz = no;
 
             /**
-             * No  desbalanceado tendendo para esquerda por isto o fator de desbalanceamento é menor que -1 
-             *  devemos fazer uma rotação para a direita
+             * No desbalanceado tendendo para esquerda por isto o fator de desbalanceamento
+             * é menor que -1 devemos fazer uma rotação para a direita
              */
-            if(no.getFb() < -1) {
-                System.out.println(ANSI_RED + "No " + no.getValor() + " desbalanceado para a esquerda" + ANSI_RESET);
+            if (no.getFb() < -1) {
+                System.out.println(red + "No " + no.getValor() + " desbalanceado para a esquerda" + reset);
 
                 No B = no.getEsquerdo();
-                
+
                 /**
                  * Se o filho for na mesma direção do pai executar rotação simples a direita
                  */
-                if(B.getFb() < 0) {
-                    System.out.println(ANSI_RED + "No " + B.getValor() + " filho na mesma direção, rotação simples a direita" + ANSI_RESET);
+                if (B.getFb() < 0) {
+                    System.out.println(
+                            red + "No " + B.getValor() + " filho na mesma direção, rotação simples a direita" + reset);
                     raiz = rotacaoSimplesDireita(no);
                 }
 
                 /**
                  * Se o filho for na direção oposta do pai executar rotação dupla a direita
                  */
-                if(B.getFb() > 0) {
-                    System.out.println(ANSI_RED + "No " + B.getValor() + " filho na direção diferente do pai rotação dupla a direita" + ANSI_RESET);
+                if (B.getFb() > 0) {
+                    System.out.println(red + "No " + B.getValor()
+                            + " filho na direção diferente do pai rotação dupla a direita" + reset);
                     raiz = rotaocaoDuplaDireita(no);
                 }
             }
 
             /**
-             * No  desbalanceado tendendo para direita por isto o fator de desbalanceamento é maior que 1 
-             *  devemos fazer uma rotação para a esquerda
+             * No desbalanceado tendendo para direita por isto o fator de desbalanceamento é
+             * maior que 1 devemos fazer uma rotação para a esquerda
              */
-            if(no.getFb() > 1) {
+            if (no.getFb() > 1) {
                 System.err.println("No " + no.getValor() + " desbalanceado para a direita");
                 No B = no.getDireito();
 
                 /**
                  * Se o filho for na mesma direção do pai executar rotação simples a esquerda
                  */
-                if(B.getFb() > 0) {
+                if (B.getFb() > 0) {
                     System.err.println("No " + B.getValor() + " filho na mesma direção, rotação simples a esquerda");
                     raiz = rotacaoSimplesEsquerda(no);
                 }
@@ -133,8 +134,9 @@ public class ArvoreAVL extends ArvoreAbstract {
                 /**
                  * Se o filho for na direção oposta do pai executar rotação dupla a esquerda
                  */
-                if(B.getFb() < 0) {
-                    System.err.println("No " + B.getValor() + " filho na direção diferente do pai rotação dupla a esquerda");
+                if (B.getFb() < 0) {
+                    System.err.println(
+                            "No " + B.getValor() + " filho na direção diferente do pai rotação dupla a esquerda");
                     raiz = rotaocaoDuplaEsquerda(no);
                 }
             }
@@ -147,8 +149,9 @@ public class ArvoreAVL extends ArvoreAbstract {
 
     /**
      * @description rotação dupla a esquerda, neste primeiro passo B e C são
-     * trocados de lugar, para ficarem no mesmo sentido, então é chamado a
-     * rotação simples a esquerda para finalizar o processo de balanceamento
+     *              trocados de lugar, para ficarem no mesmo sentido, então é
+     *              chamado a rotação simples a esquerda para finalizar o processo
+     *              de balanceamento
      * @author Hagamenon Oliveira <haganicolau@gmail.com>
      * @param A No - nó desbalanceado
      * @return No - nó balanceado
@@ -171,7 +174,7 @@ public class ArvoreAVL extends ArvoreAbstract {
 
     /**
      * @description rotação simples a esquera, B se torna pai de A e C, e retorna
-     * para ser encaixado na árvore novamente.
+     *              para ser encaixado na árvore novamente.
      * @author Hagamenon Oliveira <haganicolau@gmail.com>
      * @param A No - nó desbalanceado
      * @return No - nó balanceado
@@ -193,9 +196,10 @@ public class ArvoreAVL extends ArvoreAbstract {
     }
 
     /**
-     * @description rotação dupla a direita, neste primeiro passo B e C são
-     * trocados de lugar, para ficarem no mesmo sentido, então é chamado a
-     * rotação simples a direita para finalizar o processo de balanceamento
+     * @description rotação dupla a direita, neste primeiro passo B e C são trocados
+     *              de lugar, para ficarem no mesmo sentido, então é chamado a
+     *              rotação simples a direita para finalizar o processo de
+     *              balanceamento
      * @author Hagamenon Oliveira <haganicolau@gmail.com>
      * @param A No - nó desbalanceado
      * @return No - nó balanceado
@@ -218,7 +222,7 @@ public class ArvoreAVL extends ArvoreAbstract {
 
     /**
      * @description rotação simples a direita, B se torna pai de A e C, e retorna
-     * para ser encaixado na árvore novamente.
+     *              para ser encaixado na árvore novamente.
      * @author Hagamenon Oliveira <haganicolau@gmail.com>
      * @param A No - nó desbalanceado
      * @return No - nó balanceado
