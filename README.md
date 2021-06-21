@@ -9,7 +9,7 @@
 <p align="center">
 	<a href="#-sobre-o-projeto">Sobre</a> •
  	<a href="#-como-executar-o-projeto">Como executar</a> • 
-  	<a href="#-tecnologias">Tecnologias</a>
+  <a href="#-tecnologias">Tecnologias</a>
 </p>
 
 <h4 align="center"> 
